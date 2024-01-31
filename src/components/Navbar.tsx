@@ -1,7 +1,8 @@
 import { useState } from 'react'
 import { Button, Menu, MenuItem, Avatar } from '@mui/material'
-import { observer } from 'mobx-react'
-const Navbar = observer((userList: any) => {
+import { observer, inject } from 'mobx-react'
+const Navbar = inject('userStore')(observer(({userStore}: any) => {
+    const { userList } = userStore
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
     const open = Boolean(anchorEl); 
     const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -35,6 +36,6 @@ const Navbar = observer((userList: any) => {
         </div>
         
     )
-})
+}))
 
 export default Navbar;

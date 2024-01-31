@@ -1,5 +1,5 @@
 import { connectDB } from './connectDB'
-import { ITask } from '../types'
+import { ITask, ITaskRes } from '../types'
 
 export const getAllTasks = async () => {
     return new Promise(async (resolve, reject) => {
@@ -47,7 +47,7 @@ export const deleteTask = async (taskId: string) => {
     });
 }
 
-export const updateTask = async (task: ITask) => {
+export const updateTask = async (task: ITaskRes) => {
     return new Promise(async (resolve, reject) => {
         try {
             const db = await connectDB();

@@ -31,10 +31,10 @@ const CreateTask = observer((props: CreateTaskProps) => {
     const store = useContext(StoreContext);
     const { open, handleClose } = props
     const { handleSubmit, control, formState: { errors } } = useForm<IFormInput>()
-    const onSubmit: SubmitHandler<IFormInput> = (data) => {
-        const timestamp = data.deadline.toDate();
+    const onSubmit: SubmitHandler<IFormInput> = async (data) => {
+        const timestamp = data.deadline.valueOf();
         const actions = initialActions(actionList)
-        store.taskStore.addTask({
+        await store.taskStore.addTask({
             title: data.title,
             desc: data.desc,
             creator: data.creator,
@@ -44,7 +44,7 @@ const CreateTask = observer((props: CreateTaskProps) => {
             action: actions,
             updateTime: 0
         })
-        console.log(data.deadline.toDate())
+        handleClose()
     }
     return (
         <Dialog

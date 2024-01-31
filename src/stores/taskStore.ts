@@ -1,8 +1,8 @@
 import { makeAutoObservable } from 'mobx'
-import { ITask } from '../types'
+import { ITask, ITaskRes } from '../types'
 import { getAllTasks, addTask, updateTask, deleteTask } from '../service/taskOperations'
 class TaskStore {
-    tasks: ITask[] = []
+    tasks: ITaskRes[] = []
     constructor() {
         makeAutoObservable(this)
         this.getAllTasks()
@@ -10,16 +10,17 @@ class TaskStore {
 
     async getAllTasks() {
         const data = await getAllTasks()
-        this.tasks = data as ITask[];
+        this.tasks = data as ITaskRes[];
     }
 
     async addTask(task: ITask) {
-        await addTask(task)
-        this.tasks.push(task)
+        const newTask = await addTask(task)
+        this.tasks.push(newTask as ITaskRes)
+        return newTask;
     }
 
-    updateTask(task: ITask) {
-
+    async updateTask(task: ITaskRes) {
+        return await updateTask(task)
     }
 }
   

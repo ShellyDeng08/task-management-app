@@ -20,12 +20,12 @@ export interface ITask {
     creator: string;
     createTime: number;
     updateTime: number;
-    deadline: Date;
+    deadline: number;
     action: IActionWithStatus[];
 }
 
 export interface ITaskRes extends ITask {
-    id: string;
+    id: number;
 }
 
 export interface IUser {

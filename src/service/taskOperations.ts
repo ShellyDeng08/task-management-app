@@ -1,6 +1,7 @@
 import { connectDB } from './connectDB'
 import { ITask, ITaskRes } from '../types'
-
+import { generateId } from '../utils/generateID';
+const KEY = 'tasks'
 export const getAllTasks = async () => {
     return new Promise(async (resolve, reject) => {
         try {
@@ -12,7 +13,8 @@ export const getAllTasks = async () => {
             request.onsuccess = (event) => resolve((event.target as IDBOpenDBRequest).result)
             request.onerror = () => reject('Error when get data from DB, please try again')
         } catch (e) {
-            reject('Error connecting to the database');
+            const data = localStorage.getItem(KEY) || '[]'
+            resolve(JSON.parse(data))
         }
     });
 };
@@ -23,12 +25,33 @@ export const addTask = async (task: ITask) => {
             const db = await connectDB();
             const transaction = db.transaction(['tasks'], 'readwrite');
             const store = transaction.objectStore('tasks')
-            store.add(task);
+            const request = store.add(task);
+            request.onsuccess = (event) => {
+                const generatedKey = (event.target as IDBRequest).result
+                const getRequest = store.get(generatedKey);
 
-            transaction.oncomplete = () => resolve('Task added successfully');
-            transaction.onerror = () => reject('Error when add data from DB, please try again');
+                getRequest.onsuccess = (event) => {
+                    const taskData = (event.target as IDBRequest).result;
+                    resolve(taskData); 
+                };
+                getRequest.onerror = () => {
+                    resolve({
+                        ...task,
+                        id: generatedKey
+                    }); 
+                };
+            }
+            request.onerror = () => reject('Error when add data from DB, please try again');
         } catch (e) {
-            reject('Error connecting to the database');
+            const data = localStorage.getItem(KEY) || '[]';
+            const parsedData = JSON.parse(data);
+            const newTask = {
+                ...task,
+                id: generateId()
+            }
+            parsedData.push(newTask)
+            localStorage.setItem(KEY, JSON.stringify(parsedData))
+            resolve(newTask);
         }
     });
 };
@@ -62,7 +85,14 @@ export const updateTask = async (task: ITaskRes) => {
             }
             request.onerror = () => reject('Task update failed');
         } catch (e) {
-            reject('Error connecting to the database');
+            const data = localStorage.getItem(KEY) || '[]';
+            const parsedData = JSON.parse(data);
+            const currentIdx = parsedData.findIndex((item: ITaskRes) => item.id === task.id)
+            if(currentIdx > -1) {
+                parsedData[currentIdx] = task
+                localStorage.setItem(KEY, JSON.stringify(parsedData))
+            }
+            resolve([])
         }
     });
 }

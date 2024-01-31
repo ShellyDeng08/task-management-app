@@ -6,7 +6,7 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<TaskList/>} />
+        <Route path="/task-management-app" element={<TaskList/>} />
       </Routes>
     </BrowserRouter>
   );

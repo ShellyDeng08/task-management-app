@@ -1,10 +1,12 @@
 import { useContext } from 'react'
-import {Button, Table, TableBody, TableCell, TableRow, TableContainer, TableHead} from '@mui/material';
+import {Button, Table, TableBody, TableCell, TableRow, TableContainer, TableHead, Collapse} from '@mui/material';
 import CreateTask from "../components/CreateTask"
 import { StoreContext } from '../utils/context'
-
+import { observer } from 'mobx-react'
+import ActionStatusBar from '../components/ActionStatusBar';
 import { useState } from 'react';
-const TaskList = () => {
+import dayjs from 'dayjs'
+const TaskList = observer(() => {
     const store = useContext(StoreContext);
     const { tasks } = store.taskStore
     const [open, setOpen] = useState(false)
@@ -13,10 +15,12 @@ const TaskList = () => {
     }
     return (
         <div>
-            <h1>hello list</h1>
-            <Button onClick={handleCreateTask}>
-                Create Task
-            </Button>
+            <div style={{textAlign: 'center', margin: '2rem 0'}}>
+                <Button onClick={handleCreateTask} variant='outlined' sx={{margin: 'center'}}>
+                    Create Task
+                </Button>
+            </div>
+            
             <CreateTask open={open} handleClose={() => setOpen(false)} />
             <TableContainer>  
                 <Table sx={{ minWidth: 650 }} aria-label="simple table">
@@ -27,19 +31,29 @@ const TaskList = () => {
                         <TableCell align="right">Owner</TableCell>
                         <TableCell align="right">Creator</TableCell>
                         <TableCell align="right">Deadline</TableCell>
-                        <TableCell align="right">Current Stage</TableCell>
                     </TableRow>
                     </TableHead>
                     <TableBody>
                         {tasks.map(task => (
-                            <TableRow>
-                                <TableCell align="right">{task.title}</TableCell>
-                                <TableCell align="right">{task.desc}</TableCell>
-                                <TableCell align="right">{task.owner}</TableCell>
-                                <TableCell align="right">{task.creator}</TableCell>
-                                <TableCell align="right">{task.deadline.getDate()}</TableCell>
-                                <TableCell align="right">{task.action[0].name}</TableCell>
-                            </TableRow>
+                            <>
+                                <TableRow>
+                                    <TableCell align="right">{task.title}</TableCell>
+                                    <TableCell align="right">{task.desc}</TableCell>
+                                    <TableCell align="right">{task.owner}</TableCell>
+                                    <TableCell align="right">{task.creator}</TableCell>
+                                    <TableCell align="right">{dayjs(task.deadline).format('YYYY-MM-DD')}</TableCell>
+                                </TableRow>
+                                <TableRow>
+                                    <TableCell colSpan={6}>
+                                        <Collapse in={true} timeout="auto" unmountOnExit>
+                                            <ActionStatusBar task={task} />
+                                        </Collapse>
+                                        
+                                    </TableCell>
+                                    
+                                </TableRow>
+                            </>
+                            
                         ))}
                     </TableBody>
                 </Table>
@@ -49,6 +63,6 @@ const TaskList = () => {
         </div>
         
     )
-}
+})
 
 export default TaskList

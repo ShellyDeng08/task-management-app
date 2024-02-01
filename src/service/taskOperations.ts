@@ -92,7 +92,7 @@ export const updateTask = async (task: ITaskRes) => {
                 parsedData[currentIdx] = task
                 localStorage.setItem(KEY, JSON.stringify(parsedData))
             }
-            resolve([])
+            resolve(currentIdx)
         }
     });
 }

@@ -35,3 +35,8 @@ export interface IUser {
     name: string;
     avatar: string;
 }
+
+export enum TaskType {
+    CREATE = 'Create',
+    EDIT = 'Edit'
+}

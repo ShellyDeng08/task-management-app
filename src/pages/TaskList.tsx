@@ -6,14 +6,26 @@ import { observer } from 'mobx-react'
 import ActionStatusBar from '../components/ActionStatusBar';
 import { useState } from 'react';
 import dayjs from 'dayjs'
+import EditIcon from '@mui/icons-material/Edit';
+import { ITaskRes, TaskType } from '../types';
+
 const TaskList = observer(() => {
+    const [editTask, setEditTask] = useState<ITaskRes|null>(null)
+    const [type, setType] = useState(TaskType.CREATE)
     const store = useContext(StoreContext);
     const { tasks } = store.taskStore
     const [open, setOpen] = useState(false)
     const handleCreateTask = () => {
+        setType(TaskType.CREATE)
+        setEditTask(null)
         setOpen(true)
     }
-    return (
+    const handleEditTask = (task: ITaskRes) => {
+        setType(TaskType.EDIT)
+        setEditTask(task)
+        setOpen(true)
+    }
+     return (
         <div>
             <div style={{textAlign: 'center', margin: '2rem 0'}}>
                 <Button onClick={handleCreateTask} variant='outlined' sx={{margin: 'center'}}>
@@ -21,11 +33,16 @@ const TaskList = observer(() => {
                 </Button>
             </div>
             
-            <CreateTask open={open} handleClose={() => setOpen(false)} />
+            <CreateTask task={editTask} type={type} open={open} handleClose={() => setOpen(false)} />
             {tasks.length > 0 ? tasks.map(task => (
                 <Card key={task.id}>
                     <CardContent>
-                        <Typography>Title: {task.title}</Typography>
+                        <Typography>Title: {task.title}
+                            <Button onClick={() => handleEditTask(task)}>
+                                <EditIcon fontSize="small" />
+                            </Button>
+                            
+                        </Typography>
                         <Typography>Detail: {task.desc}</Typography>
                         <Typography>Owner: {task.owner}</Typography>
                         <Typography>Creator: {task.creator}</Typography>

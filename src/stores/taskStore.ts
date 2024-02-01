@@ -20,7 +20,11 @@ class TaskStore {
     }
 
     async updateTask(task: ITaskRes) {
-        return await updateTask(task)
+        await updateTask(task)
+        this.tasks = this.tasks.map(item => {
+            if(item.id === task.id) return task;
+            return item;
+        })
     }
 }
   

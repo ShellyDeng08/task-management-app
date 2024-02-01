@@ -89,7 +89,7 @@ const CreateTask = observer((props: CreateTaskProps) => {
             deadline: dayjs(),
           });
         }
-      }, [task, reset]);
+      }, [open, task, reset]);
 
     return (
         <Dialog

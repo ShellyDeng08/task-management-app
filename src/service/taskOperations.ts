@@ -1,6 +1,6 @@
 import { connectDB } from './connectDB'
 import { ITask, ITaskRes } from '../types'
-import { generateId } from '../utils/generateID';
+import { generateKey } from '../utils/generateID';
 const KEY = 'tasks'
 export const getAllTasks = async () => {
     return new Promise(async (resolve, reject) => {
@@ -47,7 +47,7 @@ export const addTask = async (task: ITask) => {
             const parsedData = JSON.parse(data);
             const newTask = {
                 ...task,
-                id: generateId()
+                id: generateKey.generateId()
             }
             parsedData.push(newTask)
             localStorage.setItem(KEY, JSON.stringify(parsedData))

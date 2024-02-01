@@ -1,16 +1,18 @@
 export interface IAction {
     id: string;
     name: string;
+    desc: string;
 }
 
 export enum ActionStatus {
-    'NOT_START' = 1,
+    'PENDING' = 1,
     'IN_PROGRESS' = 2,
     'COMPLETED' = 3
 }
 
 export interface IActionWithStatus extends IAction {
-    status: ActionStatus
+    status: ActionStatus;
+    completedTime?: number;
 }
 
 export interface ITask {

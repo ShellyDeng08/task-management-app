@@ -1,7 +1,7 @@
-import { useContext } from 'react'
+import { useContext, useState } from 'react'
 import { useForm, SubmitHandler, Controller } from "react-hook-form"
 import { observer } from 'mobx-react'
-import {TextField, Autocomplete, Button, Dialog, DialogTitle, DialogContent, DialogActions} from '@mui/material';
+import {TextField, Autocomplete, Button, Dialog, DialogTitle, DialogContent, DialogActions, Select, OutlinedInput, MenuItem} from '@mui/material';
 import { userList, actionList } from '../utils/data'
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers';
@@ -11,7 +11,6 @@ import { initialActions } from '../utils/dataHelper'
 import { StoreContext } from '../utils/context'
 
 
-import { ITask } from "../types";
   
 interface IFormInput {
     title: string;
@@ -46,6 +45,7 @@ const CreateTask = observer((props: CreateTaskProps) => {
         })
         handleClose()
     }
+
     return (
         <Dialog
         open={open}
@@ -131,6 +131,7 @@ const CreateTask = observer((props: CreateTaskProps) => {
                             name='deadline'
                             control={control}
                             rules={{ required: 'Deadline is required' }}
+                            defaultValue={dayjs()} 
                             render={({ field }) => (
                                 <DatePicker
                                     label="Select Date"

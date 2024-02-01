@@ -1,5 +1,4 @@
 // mock user data
-
 export const userList = [
     {
         name: 'John',
@@ -32,23 +31,35 @@ export const actionList = [
 {
     name: 'Ticket Raised', 
     id: '0',
+    desc: ''
 },
 {
-    name: 'action1', 
+    name: 'Requirements Analysis', 
     id: '1',
+    desc: 'Define and analyze the requirements of the project. Gather necessary information to understand project objectives and user expectations.'
 }, {
-    name: 'action2',
-    id: '2'
+    name: 'Design Phase	',
+    id: '2',
+    desc: 'Create system architecture and design documents. Sketch prototypes and system designs to ensure a common understanding of the solution among the team.'
 }, {
-    name: 'action3',
-    id: '3'
+    name: 'Development Iteration	',
+    id: '3',
+    desc: 'Write code and complete specific development tasks. Typically includes front-end, back-end, and API development.'
 },{
-    name: 'action4',
-    id: '4'
+    name: 'Code Review',
+    id: '4',
+    desc: 'Peers review each other\'s code to ensure quality and consistency. '
 },{
-    name: 'action5',
-    id: '5'
+    name: 'Testing Phase',
+    id: '5',
+    desc: 'Conduct unit testing, integration testing, and system testing to ensure the code is error-free and meets the specification requirements.'
+},
+{
+    name: 'Launch',
+    id: '6',
+    desc: 'Deploy the product to the production environment and release it to the public.'
 }, {
     name: 'Task Finished', 
-    id: '6',
+    id: '7',
+    desc: ''
 }]

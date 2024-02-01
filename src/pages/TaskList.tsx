@@ -1,5 +1,5 @@
 import { useContext } from 'react'
-import {Button, Table, TableBody, TableCell, TableRow, TableContainer, TableHead, Collapse} from '@mui/material';
+import {Button, Table, TableBody, TableCell, TableRow, TableContainer, TableHead, Collapse, Card, CardContent, Typography} from '@mui/material';
 import CreateTask from "../components/CreateTask"
 import { StoreContext } from '../utils/context'
 import { observer } from 'mobx-react'
@@ -22,7 +22,24 @@ const TaskList = observer(() => {
             </div>
             
             <CreateTask open={open} handleClose={() => setOpen(false)} />
-            <TableContainer>  
+            {tasks.length > 0 ? tasks.map(task => (
+                <Card key={task.id}>
+                    <CardContent>
+                        <Typography>Title: {task.title}</Typography>
+                        <Typography>Detail: {task.desc}</Typography>
+                        <Typography>Owner: {task.owner}</Typography>
+                        <Typography>Creator: {task.creator}</Typography>
+                        <Typography>Deadline: {dayjs(task.deadline).format('YYYY-MM-DD')}</Typography>
+                        <ActionStatusBar task={task} />
+                    </CardContent>
+                </Card>
+            )): 
+            <div style={{textAlign:'center'}}>
+                <Typography>There are no tasks created yet. Create them now.</Typography>
+            </div>}
+            
+            
+            {/* <TableContainer>  
                 <Table sx={{ minWidth: 650 }} aria-label="simple table">
                     <TableHead>
                     <TableRow>
@@ -58,7 +75,7 @@ const TaskList = observer(() => {
                     </TableBody>
                 </Table>
                 
-            </TableContainer>
+            </TableContainer> */}
             
         </div>
         
